@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block title %}Recommended Resources | Study Resource Recommendation System{% endblock %}
+
+{% block content %}
+<section class="page-header">
+    <h1>Recommended resources</h1>
+    <p>
+        Showing matches for
+        <strong>{{ query.subject }}</strong>
+        &middot; {{ query.topic }}
+        &middot; {{ query.level }}
+        &middot; {{ query.resource_type }}
+    </p>
+</section>
+
+{% if cards %}
+    <section class="grid cards">
+        {% for card in cards %}
+            <article class="card resource-card">
+                <p class="match">{{ "%.2f"|format(card.match) }}% match</p>
+                <h2>{{ card.name }}</h2>
+                <ul>
+                    <li><span>Subject</span> {{ card.subject }}</li>
+                    <li><span>Topic</span> {{ card.topic }}</li>
+                    <li><span>Level</span> {{ card.level }}</li>
+                    <li><span>Type</span> {{ card.type }}</li>
+                </ul>
+                {% if card.url %}
+                    <a class="btn btn-secondary" href="{{ card.url }}" target="_blank" rel="noopener noreferrer">View Resource</a>
+                {% endif %}
+            </article>
+        {% endfor %}
+    </section>
+{% else %}
+    <section class="card empty-state">
+        <h2>No suitable resources found</h2>
+        <p>
+            Nothing in the dataset was similar enough to this combination.
+            Try another topic, level, or resource type for the same subject.
+        </p>
+        <a class="btn btn-primary" href="{{ url_for('recommend_form') }}">Try again</a>
+    </section>
+{% endif %}
+
+<p class="back-link">
+    <a href="{{ url_for('recommend_form') }}">Change preferences</a>
+</p>
+{% endblock %}

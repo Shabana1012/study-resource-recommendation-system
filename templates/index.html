@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="hero">
+    <p class="eyebrow">For computer science students</p>
+    <h1>Study Resource Recommendation System</h1>
+    <p class="lead">
+        Tell us your subject, topic, learning level, and preferred resource type.
+        The system compares your preferences with a study resource dataset using
+        one-hot encoding and cosine similarity, then shows the three best matches.
+    </p>
+    <a class="btn btn-primary" href="{{ url_for('recommend_form') }}">Get Recommendations</a>
+</section>
+
+<section class="how-it-works">
+    <h2>How it helps</h2>
+    <div class="grid three">
+        <article class="card">
+            <h3>1. Share your goal</h3>
+            <p>Choose what you are studying and whether you want a video, notes, or practice.</p>
+        </article>
+        <article class="card">
+            <h3>2. Compare resources</h3>
+            <p>Python converts categories into numbers and measures similarity with cosine similarity.</p>
+        </article>
+        <article class="card">
+            <h3>3. Study the top 3</h3>
+            <p>You get the most suitable resources first, with a match percentage for each one.</p>
+        </article>
+    </div>
+</section>
+{% endblock %}

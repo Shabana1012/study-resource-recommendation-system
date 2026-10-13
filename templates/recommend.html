@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+{% block title %}Get Recommendations | Study Resource Recommendation System{% endblock %}
+
+{% block content %}
+<section class="page-header">
+    <h1>Find your study resources</h1>
+    <p>Fill in every field. The Python recommender will rank resources from the dataset.</p>
+</section>
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        <div class="alerts" role="alert">
+            {% for category, message in messages %}
+                <p class="alert {{ category }}">{{ message }}</p>
+            {% endfor %}
+        </div>
+    {% endif %}
+{% endwith %}
+
+<form id="recommend-form" class="card form-card" action="{{ url_for('results') }}" method="post" novalidate>
+    <label for="subject">Subject</label>
+    <select id="subject" name="subject" required>
+        <option value="">Select a subject</option>
+        {% for subject in subjects %}
+            <option value="{{ subject }}" {% if form_data.get('subject') == subject %}selected{% endif %}>{{ subject }}</option>
+        {% endfor %}
+    </select>
+
+    <label for="topic">Topic</label>
+    <select id="topic" name="topic" required>
+        <option value="">Select a topic</option>
+        {% for topic in topics %}
+            <option value="{{ topic }}" {% if form_data.get('topic') == topic %}selected{% endif %}>{{ topic }}</option>
+        {% endfor %}
+        <option value="Other" {% if form_data.get('topic') == 'Other' %}selected{% endif %}>Other (type your own)</option>
+    </select>
+
+    <div id="custom-topic-wrap" class="hidden">
+        <label for="custom_topic">Your topic</label>
+        <input id="custom_topic" name="custom_topic" type="text" maxlength="80"
+               value="{{ form_data.get('custom_topic', '') }}"
+               placeholder="Example: Recursion, SQL Joins">
+    </div>
+
+    <label for="level">Learning level</label>
+    <select id="level" name="level" required>
+        <option value="">Select a level</option>
+        {% for level in levels %}
+            <option value="{{ level }}" {% if form_data.get('level') == level %}selected{% endif %}>{{ level }}</option>
+        {% endfor %}
+    </select>
+
+    <label for="resource_type">Resource type</label>
+    <select id="resource_type" name="resource_type" required>
+        <option value="">Select a type</option>
+        {% for type in types %}
+            <option value="{{ type }}" {% if form_data.get('resource_type') == type %}selected{% endif %}>{{ type }}</option>
+        {% endfor %}
+    </select>
+
+    <p id="form-error" class="alert error hidden" role="alert"></p>
+    <button class="btn btn-primary" type="submit">Recommend Resources</button>
+</form>
+{% endblock %}
